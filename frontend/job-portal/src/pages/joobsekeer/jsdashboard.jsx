@@ -5,3 +5,4 @@ export const jsdashboard = () => {
     <div>jsdashboard</div>
   )
 }
+export default jsdashboard;

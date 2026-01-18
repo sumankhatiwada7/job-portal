@@ -5,3 +5,4 @@ export const userprofile = () => {
     <div>userprofile</div>
   )
 }
+export default userprofile;

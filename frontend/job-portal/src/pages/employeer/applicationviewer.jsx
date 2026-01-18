@@ -5,3 +5,4 @@ export const applicationviewer = () => {
     <div>applicationviewer</div>
   )
 }
+export default applicationviewer;

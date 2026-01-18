@@ -5,3 +5,4 @@ export const editprofilee = () => {
     <div>editprofilee</div>
   )
 }
+export default editprofilee;

@@ -5,3 +5,4 @@ export const eprofilepage = () => {
     <div>eprofilepage</div>
   )
 }
+export default eprofilepage;

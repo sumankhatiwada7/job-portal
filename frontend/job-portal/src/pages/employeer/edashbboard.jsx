@@ -5,3 +5,4 @@ export const edashbboard = () => {
     <div>edashbboard</div>
   )
 }
+export default edashbboard;

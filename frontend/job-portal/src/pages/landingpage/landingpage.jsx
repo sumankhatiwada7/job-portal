@@ -1,7 +1,13 @@
 import React from 'react'
+import Header from './components/header'
+import Hero from './components/hero'
 
-export const landingpage = () => {
+export const LandingPage = () => {
   return (
-    <div>landingpage</div>
+    <>
+      <Header />
+      <Hero />
+    </>
   )
 }
+export default LandingPage;
