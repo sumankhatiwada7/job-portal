@@ -1,4 +1,4 @@
-import { JsonWebTokenError } from "jsonwebtoken";
+
 import{user} from "../model/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -7,7 +7,7 @@ export const register=async(req,res)=>{
      const {fullname,email,password,role}=req.body;
      if(!fullname||!email||!password||!role){
         return res.status(400).json({
-            message:"erroer in register ",
+            message:"error in register ",
             success:false
         });
      };
@@ -76,7 +76,7 @@ export const  login= async(req,res)=>{
         message:`welcome back ${user.fullname}`,
         user,
         success:true
-    })
+    });
 
     } catch (error) {
       console.log(error);
@@ -92,7 +92,7 @@ export const logout =async(req,res)=>{
         console.log(error);
     }
 }
-const profileupdate=async(req,res)=>{
+export const profileupdate=async(req,res)=>{
     try{
      const {bio,skills,fullname,email,phonenumber} = req.body;
      if(!bio||!skills||!fullname||!email||!phonenumber){
@@ -104,7 +104,7 @@ const profileupdate=async(req,res)=>{
         };
        const splitskills= skills.split(',');
        const userid=req.userid;
-       let user =await user.findone({email});
+       let user =await user.findOne({email});
        if(!user){
         return res.status(400).json({
             message:"user not found",
@@ -113,12 +113,13 @@ const profileupdate=async(req,res)=>{
         
 
        };
-        user.fullname=fullname;
-        user.email=email;
-        user.phoneno=phonenumber;
-        user.bio=bio;
-        user.skills=splitskills;
-        await user.save();
+       //updating user profile
+       if(fullname) user.fullname=fullname;
+       if(email) user.email=email;
+       if(phonenumber) user.phoneno=phonenumber;
+       if(bio) user.bio=bio;
+       if(skills) user.skills=splitskills;
+       await user.save();
 
         user={
         _id:user._id,
