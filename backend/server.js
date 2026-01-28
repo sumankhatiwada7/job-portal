@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import connectdb from "./utils/db.js";
 import userroute from "./routes/user.route.js";
 import companyroute from "./routes/company.route.js";
+import jobroute from "./routes/job.route.js";
 
 dotenv.config();
 connectdb();
@@ -20,7 +21,8 @@ app.use(cors({
   credentials: true,
 }));
 app.use("/api/v1/user",userroute);
-app.use("api/v1/company",companyroute)
+app.use("/api/v1/company",companyroute);
+app.use("/api/v1/job",jobroute);
 app.get("/home", (req, res) => {
   res.status(200).json({
     message: "welcome to job portal backend",

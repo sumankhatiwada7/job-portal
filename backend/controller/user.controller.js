@@ -82,9 +82,10 @@ export const  login= async(req,res)=>{
       console.log(error);
     }
 }
+
 export const logout =async(req,res)=>{
     try {
-        return res.status(200).cookie('token','',{maxage:0}).json({
+        return res.status(200).cookie('token','',{maxAge:0}).json({
             message:"logged out successfully",
             success:true
         })
@@ -102,7 +103,10 @@ export const profileupdate=async(req,res)=>{
         
         });
         };
-       const splitskills= skills.split(',');
+       let skillsarray;
+       if(skills){
+        skillsarray = skills.split(',');
+       }
        const userid=req.userid;
        let user =await user.findOne({email});
        if(!user){
@@ -113,6 +117,7 @@ export const profileupdate=async(req,res)=>{
         
 
        };
+
        //updating user profile
        if(fullname) user.fullname=fullname;
        if(email) user.email=email;
