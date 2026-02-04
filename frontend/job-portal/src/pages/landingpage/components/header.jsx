@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {motion} from 'framer-motion';
 
 const Header = () => {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   const user = { fullName:"suman", role: "employer" };
   const navigate = useNavigate();
   return (

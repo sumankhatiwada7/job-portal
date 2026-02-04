@@ -7,15 +7,29 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email || !password) {
       setError('Please enter both email and password.')
       return
     }
     setError('')
-    // TODO: wire up real auth API
-    navigate('/find-jobs')
+    const input={email,password}
+    try{
+    const res=await axios.post(`${user_api}/login`,input,{
+      withCredentials:true,
+      headers:{
+        "content-type":"multipart/form-data"
+      }
+    });
+    if(res.data.sucess){
+      navigate('/find-jobs')
+      toast.sucess(res.data.message);
+    }
+    } catch (error){
+      console.log(error);
+    }
+   
   }
 
   return (

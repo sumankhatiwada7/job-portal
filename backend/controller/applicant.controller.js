@@ -42,3 +42,56 @@ export const applyjob=async(req,res)=>{
         
     }
 }
+export const getappliedjobs=async(req,res)=>{
+    try{
+     const {id:userId}=req.params;
+     const application = await applicant.find({
+        applicant:userId
+     })
+     .sort({createdAt:-1})
+     .populate({path:"job" ,
+        populate:{
+            path:"company"
+        }
+     });
+     if(!application){
+        return res.status(404).json({
+            message:"no applied jobs found",
+            sucess:false
+        })
+     }
+     return res.status(200).json({
+        application,
+        sucess:true
+     })
+    }
+    catch(error){
+        console.log(error);
+        
+    }
+}
+// data for admin
+export const getapplicantdetails =async(req,res)=>{
+    try{
+        const{id:jobId}=req.params;
+        const job= await job.findById(jobId).populate({
+            path:"applications",
+            option:sort({createdAt:-1}),
+            populate:{
+                path:"applicant"
+            }
+        });
+        if(!job){
+            return res.status(404).json({
+                message:"job not found",
+                sucess:false
+            })
+        };
+        return res.status(200).json({
+            job,
+            sucess:true
+        })
+    }
+    catch(error){
+    }
+}

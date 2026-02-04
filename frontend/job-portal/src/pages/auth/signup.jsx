@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { user_api } from '../utils/apipaths'
+import { toast } from 'sonner';
+
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -9,9 +13,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [role, setRole] = useState('job-seeker')
   const [profileSummary, setProfileSummary] = useState('')
+  const [imageFile, setImageFile] = useState(null)
   const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!fullName || !email || !password || !confirmPassword || !role) {
       setError('Please fill out all fields.')
@@ -22,9 +27,26 @@ const Signup = () => {
       return
     }
     setError('')
-    const payload = { fullName, email, password, role, profileSummary }
-    // TODO: replace with real signup API call
-    navigate('/login')
+    const payload = { fullName, email, password, role, profileSummary, imageFile }
+    try {
+      const res=await axios.post(`${user_api}/register`, payload,{
+        withCredentials:true,
+        headers:{
+          "content-type":"multipart/form-data"
+        }
+      });
+      if(res.data.sucess){
+          navigate('/login')
+          toast.success(res.data.message);
+      }
+      
+    } catch (error) {
+      console.log(error);
+      setError(error.response?.data?.message || 'Registration failed. Please try again.')
+      return;
+    }
+    
+    
   }
 
   return (
@@ -126,6 +148,19 @@ const Signup = () => {
               placeholder="Tell us briefly about yourself or your company"
             />
             <p className="text-xs text-gray-500">You can skip this for now and add more details later.</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="profileImage">
+              Profile Image (optional)
+            </label>
+            <input
+              id="profileImage"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
           </div>
 
           <button
