@@ -95,3 +95,33 @@ export const getapplicantdetails =async(req,res)=>{
     catch(error){
     }
 }
+
+export const updatestatus=async(req,res)=>{
+    try {
+        const {status}=req.body;
+        const{id:applicationId}=req.params;
+        if(!status){
+            return res.status(400).json({
+                message:"status is required",
+                sucess:false
+        })
+        };
+        const application= await applicant.findOne({_id:applicationId});
+        if(!application){
+            return res.status(404).json({
+                message:"application not found",
+                sucess:false
+        })
+        };
+        application.status=status.toLowerCase();
+        await application.save();
+        return res.status(200).json({
+
+            message:"application status updated successfully",
+            sucess:true,
+            
+        });
+    } catch (error) {
+        
+    }
+}
